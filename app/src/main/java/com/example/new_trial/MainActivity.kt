@@ -47,7 +47,7 @@ import timber.log.Timber
 
 
 private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
-private const val LOCATION_PERMISSION_REQUEST_CODE = 2 // para preguntar la location al user
+private const val LOCATION_PERMISSION_REQUEST_CODE = 2 // Request if the user allows its location 
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,12 +60,12 @@ class MainActivity : AppCompatActivity() {
         bluetoothManager.adapter
     }
 
-    private val bleScanner by lazy { //se iniciará solo si se usa (lazy)
+    private val bleScanner by lazy { // lazy: only starts ble scanning if it is in use
         bluetoothAdapter.bluetoothLeScanner
     }
 
     private val scanSettings = ScanSettings.Builder()
-        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY) // igual hay que poner el LOW_POWER
+        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY) // It may be desirable to include LOW_POWER
         .build()
 
     private var isScanning = false // scan state
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             ENABLE_BLUETOOTH_REQUEST_CODE -> {
                 if (resultCode != Activity.RESULT_OK) {
-                    promptEnableBluetooth()                 // si sigue sin bluetooth activo que siga saliendo la alerta
+                    promptEnableBluetooth()                 // If the user keeps the bluetooth disabled, an alert will appear
                 }
             }
         }
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
     private fun promptEnableBluetooth() {
         if (!bluetoothAdapter.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(enableBtIntent, ENABLE_BLUETOOTH_REQUEST_CODE) // si no tiene activo el bluetooth que salte una alerta
+            startActivityForResult(enableBtIntent, ENABLE_BLUETOOTH_REQUEST_CODE) // if the bluetooth is disabled, an alert will appear
         }
     }
 

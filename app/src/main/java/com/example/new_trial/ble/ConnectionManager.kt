@@ -35,9 +35,9 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
-private const val GATT_MIN_MTU_SIZE = 23
+private const val GATT_MIN_MTU_SIZE = 23 // Minimum amount of data that can be sent and received
 /** Maximum BLE MTU size as defined in gatt_api.h. */
-private const val GATT_MAX_MTU_SIZE = 517 // cantidad máxima de data que se puede enviar y recibir
+private const val GATT_MAX_MTU_SIZE = 517 // Maximum amount of data that can be sent and received
 
 object ConnectionManager {
 
@@ -104,7 +104,7 @@ object ConnectionManager {
         }
     }
 
-    fun writeCharacteristic( // elige el write type más a adecuado a las propiedades de características
+    fun writeCharacteristic( // chooses the type of writing most suitable for the properties of the features
         device: BluetoothDevice,
         characteristic: BluetoothGattCharacteristic,
         payload: ByteArray
@@ -381,7 +381,7 @@ object ConnectionManager {
 
         override fun onMtuChanged(gatt: BluetoothGatt, mtu: Int, status: Int) {
             Timber.w("ATT MTU changed to $mtu, success: ${status == BluetoothGatt.GATT_SUCCESS}")
-            listeners.forEach { it.get()?.onMtuChanged?.invoke(gatt.device, mtu) } // informa a la app de que la cantidad de data pedida ha sido succesfully or not
+            listeners.forEach { it.get()?.onMtuChanged?.invoke(gatt.device, mtu) } // The app inform if the requested data have been succesfully sent or not 
 
             if (pendingOperation is MtuRequest) {
                 signalEndOfOperation()
